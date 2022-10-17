@@ -1,100 +1,49 @@
-const { NotImplementedError } = require('../extensions/index.js');
+const { NotImplementedError } = require("../extensions/index.js");
 
 /**
  * Implement chainMaker object according to task description
  *
  */
- const chainMaker = {
-   getLength() {
-    throw new NotImplementedError('Not implemented');
-    return this.count;
+const chainMaker = {
+  result: [],
+  count: 0,
+  getLength() {
+    return this.result.length;
   },
-   addLink(value) {
-    throw new NotImplementedError('Not implemented');
-    this.count = this.count += 1;
-    if (!("chain" in chainMaker)) {
-      this.count = 1;
-      chainMaker.chain = "";
-      chainMaker.chain = chainMaker.chain + `~( ${value} )~`;
-    } else {
-      chainMaker.chain = chainMaker.chain + `~( ${value} )~`;
-    }
+  addLink(value) {
+    this.result.push(`( ${value} )`);
+    this.count = this.count + 1;
     return this;
   },
-   removeLink(position) {
-    throw new NotImplementedError('Not implemented');
-    if (!("chain" in chainMaker)) {
+  removeLink(position) {
+    let testArray = [];
+    for (let i = 1; i <= this.count; i++) {
+      testArray.push(i)
+    }
+    if (testArray.includes(position)) {
+      this.result.splice(position - 1, 1);
+      this.count = this.count - 1;
+      return this;
 
-    } else if (position > chainMaker.count || position <= 0) {
-      throw Error("You can't remove incorrect link!");
     } else {
-      this.count = this.count--;
-      let bracketsCount = 0,
-        start = 0,
-        end = 0;
-      for (let i = 0; i < chainMaker.chain.split("").length; i++) {
-        if (chainMaker.chain[i] === "(" && chainMaker.chain[i-1] === "~") {
-          bracketsCount++;
-          if (bracketsCount === position) {
-            start = i - 1;
-          }
-        }
-        if (chainMaker.chain[i] === ")" && chainMaker.chain[i+1] === "~") {
-          if (bracketsCount === position) {
-            end = i + 2;
-            console.log(chainMaker.chain)
-            chainMaker.chain =
-              chainMaker.chain.split("").splice(0, start).join("") +
-              chainMaker.chain
-                .split("")
-                .splice(end, chainMaker.chain.length - 1)
-                .join("");
-            i = chainMaker.chain.split("").length;
-            console.log(chainMaker.chain)
-          }
-        }
-      }
-      return this;
+      this.result = [];
+      this.count = 0;
+      throw new Error("You can't remove incorrect link!");
     }
   },
-   reverseChain() {
-    throw new NotImplementedError('Not implemented');
-    if (!("chain" in chainMaker)) {
-      return this;
-    } else {
-      let newChain = [];
-      let start, end;
-      for (let i = 0; i < chainMaker.chain.split("").length; i++) {
-        if (chainMaker.chain[i] === "("  && chainMaker.chain[i-1] === "~") {
-          start = i - 1;
-        } else if (chainMaker.chain[i] === ")"  && chainMaker.chain[i+1] === "~") {
-          end = i + 2;
-          newChain.unshift(
-            chainMaker.chain.split("").join("").slice(start, end)
-          );
-          start = 0;
-          end = 0;
-        }
-      }
-      chainMaker.chain = newChain.join("");
-      return this;
-    }
+  reverseChain() {
+    this.result = this.result.reverse();
+    return this;
   },
-   finishChain() {
-    throw new NotImplementedError('Not implemented');
-    let result = chainMaker.chain;
-    delete chainMaker.chain;
-    delete chainMaker.count;
-    result = result.split("");
-    result.splice(0, 1);
-    result.splice(result.length - 1, 1);
-    result = result.join("");
-    //    throw
-    console.log(result)
+  finishChain() {
+    result = this.result.join("~~");
+    this.result = [];
+    this.count = 0;
+    console.log(this.result);
     return result;
   },
 };
 
 module.exports = {
-  chainMaker
+  chainMaker,
 };

@@ -25,7 +25,7 @@ const { NotImplementedError } = require("../extensions/index.js");
       this.mode = mode;
     }
   encrypt(value, key) {
-
+    throw new NotImplementedError('Not implemented');
   if (value == null || key == null) {
     throw Error("Incorrect arguments!");
   }
@@ -66,6 +66,7 @@ const { NotImplementedError } = require("../extensions/index.js");
 
 }
 decrypt(value, key) {
+  throw new NotImplementedError('Not implemented');
   if (value == null || key == null) {
     throw Error("Incorrect arguments!");
   }
